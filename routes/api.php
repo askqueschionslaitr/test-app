@@ -15,9 +15,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{id}', [ProductController::class, 'update']);
-    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-
-    Route::apiResource('users', UserController::class);
-
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::group(['middleware' => ['role:Admin']], function () {
+        
+        Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+        Route::apiResource('users', UserController::class);
+        
+    });
+
 });
